@@ -1,14 +1,11 @@
 import paramiko
-import paramiko_expect
 from paramiko_expect import SSHClientInteraction
-import codecs
-import sys
 import time
 import re
 import subprocess
 import socket
-import errno
-import FTP_Name
+from script import FTP_Name
+
 
 def connection_ssh():
     SSH_ADDRESS = "10.76.7.18"
