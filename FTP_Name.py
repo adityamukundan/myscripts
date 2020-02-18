@@ -27,6 +27,11 @@ def ftp_link_name():
             else:
                 print("please input a valid choice")
                 continue
+        build_number = input('Please enter the build number or press 1 for last successful build \n')
+        if build_number == '1':
+            build_rls = 'lastSuccessfulBuild'
+        else:
+            build_rls = build_number
         SSH_ADDRESS = "10.229.10.10"
         SSH_USERNAME = "reluser"
         SSH_PASSWORD = "qwerty1!"
@@ -36,12 +41,12 @@ def ftp_link_name():
         ssh.load_system_host_keys()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(SSH_ADDRESS, username=SSH_USERNAME, password=SSH_PASSWORD, look_for_keys=False)
-        stdin, stdout, stderr = ssh.exec_command( "cd alteonGIT \n cd cheetah \n cd " + version + " \n cd lastSuccessfulBuild \n cd " +type+ " \n cd NDEBUG \n ls")
+        stdin, stdout, stderr = ssh.exec_command("cd alteonGIT \n cd cheetah \n cd " + version + " \n cd "+build_rls+" \n cd " +type+ " \n cd NDEBUG \n ls")
         build = stdout.readlines()
         actual_build = build[2]
-        actual_path = "alteonGIT/cheetah/" + version + "/lastSuccessfulBuild/" +type+ "/NDEBUG/"+actual_build
+        actual_path = "alteonGIT/cheetah/" + version + "/"+build_rls+"/" +type+ "/NDEBUG/"+actual_build
         actual_path = actual_path.strip()
-        # print(actual_path)
+        print(actual_path)
         return actual_path
     except paramiko.ssh_exception.AuthenticationException as msg:
         print('please enter valid user name ')
